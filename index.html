@@ -8,161 +8,105 @@
   :root{
     --bg:#0E1014; --panel:#171A20; --panel2:#1E222B; --line:#2A2F3A;
     --text:#E8EAED; --muted:#8B93A0; --accent:#4C8DFF; --good:#28C76F;
-    --warn:#F4A52A; --bad:#FF5C66; --white:#FFFFFF;
+    --warn:#F4A52A; --bad:#FF5C66;
     --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
-  body{
-    background:var(--bg); color:var(--text); font-family:var(--sans);
-    -webkit-font-smoothing:antialiased; line-height:1.45;
-  }
-  .micro{
-    font-size:11px; letter-spacing:.13em; text-transform:uppercase;
-    color:var(--muted); font-weight:600;
-  }
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+  .micro{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600}
   .mono{font-family:var(--mono)}
 
-  header.app{
-    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
-    padding:18px 22px; border-bottom:1px solid var(--line);
-  }
-  header.app h1{
-    font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0;
-  }
-  header.app .spec-strip{
-    font-family:var(--mono); font-size:12px; color:var(--muted);
-  }
-  header.app .spec-strip b{color:var(--accent); font-weight:600}
+  header.app{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:18px 22px;border-bottom:1px solid var(--line)}
+  header.app h1{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:0}
+  header.app .spec-strip{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  header.app .spec-strip b{color:var(--accent);font-weight:600}
 
-  .wrap{
-    display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:0;
-    min-height:calc(100% - 61px);
-  }
-  @media (max-width:860px){ .wrap{grid-template-columns:1fr} }
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;min-height:calc(100% - 61px)}
+  @media (max-width:860px){.wrap{grid-template-columns:1fr}}
 
-  /* ---- Stage ---- */
-  .stage{
-    padding:26px 22px; display:flex; flex-direction:column; align-items:center;
-    gap:18px; border-right:1px solid var(--line);
-  }
-  @media (max-width:860px){ .stage{border-right:none; border-bottom:1px solid var(--line)} }
+  .stage{padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:18px;border-right:1px solid var(--line)}
+  @media (max-width:860px){.stage{border-right:none;border-bottom:1px solid var(--line)}}
 
-  .frame{
-    position:relative; width:300px; max-width:100%;
-    aspect-ratio:3/4; background:
-      linear-gradient(45deg,#1b1f27 25%,transparent 25%,transparent 75%,#1b1f27 75%) 0 0/16px 16px,
-      linear-gradient(45deg,#1b1f27 25%,#15181e 25%,#15181e 75%,#1b1f27 75%) 8px 8px/16px 16px;
-    border-radius:10px; overflow:hidden; touch-action:none;
-    box-shadow:0 0 0 1px var(--line), 0 18px 40px -20px rgba(0,0,0,.8);
-  }
-  #editor{ width:100%; height:100%; display:block; cursor:grab }
+  .frame{position:relative;width:300px;max-width:100%;aspect-ratio:3/4;border-radius:10px;overflow:hidden;touch-action:none;
+    background:linear-gradient(45deg,#1b1f27 25%,transparent 25%,transparent 75%,#1b1f27 75%) 0 0/16px 16px,
+               linear-gradient(45deg,#1b1f27 25%,#15181e 25%,#15181e 75%,#1b1f27 75%) 8px 8px/16px 16px;
+    box-shadow:0 0 0 1px var(--line),0 18px 40px -20px rgba(0,0,0,.8)}
+  #editor{width:100%;height:100%;display:block;cursor:grab}
   #editor.dragging{cursor:grabbing}
-  .frame .guide{
-    position:absolute; inset:0; pointer-events:none; opacity:.0; transition:opacity .2s;
-  }
+  .guide{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s}
   .frame.has-image .guide{opacity:1}
-  .frame .guide::before{ /* head room / shoulder guide */
-    content:""; position:absolute; left:18%; right:18%; top:11%; bottom:6%;
-    border:1px dashed rgba(255,255,255,.22); border-radius:48% 48% 8% 8%;
-  }
+  .guide::before{content:"";position:absolute;left:18%;right:18%;top:11%;bottom:6%;border:1px dashed rgba(255,255,255,.22);border-radius:48% 48% 8% 8%}
 
-  .dropzone{
-    position:absolute; inset:0; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:10px; text-align:center;
-    padding:20px; color:var(--muted); cursor:pointer;
-  }
+  .dropzone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px;color:var(--muted);cursor:pointer}
   .frame.has-image .dropzone{display:none}
   .dropzone svg{width:34px;height:34px;opacity:.7}
-  .dropzone .big{color:var(--text); font-weight:600; font-size:14px}
-  .frame.dragover{outline:2px solid var(--accent); outline-offset:-2px}
+  .dropzone .big{color:var(--text);font-weight:600;font-size:14px}
+  .frame.dragover{outline:2px solid var(--accent);outline-offset:-2px}
 
-  .stage-controls{ width:300px; max-width:100%; display:flex; flex-direction:column; gap:14px }
-  .row{display:flex; align-items:center; gap:12px}
-  .row .micro{flex:0 0 64px}
-  input[type=range]{
-    -webkit-appearance:none; appearance:none; flex:1; height:4px; border-radius:4px;
-    background:var(--line); outline:none;
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
-    background:var(--accent); cursor:pointer; border:2px solid #0E1014;
-  }
-  input[type=range]::-moz-range-thumb{
-    width:16px;height:16px;border-radius:50%;background:var(--accent);
-    cursor:pointer;border:2px solid #0E1014;
-  }
+  .overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(10,12,16,.82);backdrop-filter:blur(2px);color:var(--text);text-align:center;padding:18px}
+  .overlay.show{display:flex}
+  .spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .overlay .t{font-size:13px;font-weight:600}
+  .overlay .s{font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+  .stage-controls{width:300px;max-width:100%;display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;align-items:center;gap:12px}
+  input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:4px;background:var(--line);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #0E1014}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #0E1014}
   input[type=range]:disabled{opacity:.35}
-  .row .val{font-family:var(--mono); font-size:12px; color:var(--muted); width:34px; text-align:right}
+  .row .val{font-family:var(--mono);font-size:12px;color:var(--muted);width:40px;text-align:right}
 
-  .stage-actions{display:flex; gap:10px; width:300px; max-width:100%}
-  button{font-family:var(--sans); cursor:pointer; border:none; border-radius:8px; font-weight:600}
-  .btn-ghost{
-    flex:1; background:var(--panel2); color:var(--text); border:1px solid var(--line);
-    padding:10px; font-size:13px;
-  }
+  .stage-actions{display:flex;gap:10px;width:300px;max-width:100%}
+  button{font-family:var(--sans);cursor:pointer;border:none;border-radius:8px;font-weight:600}
+  .btn-ghost{flex:1;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:10px;font-size:13px}
   .btn-ghost:hover{border-color:#3a4150}
 
-  /* ---- Panel ---- */
-  .panel{ padding:22px; display:flex; flex-direction:column; gap:22px; background:var(--panel) }
-  .block{display:flex; flex-direction:column; gap:12px}
-  .block > .micro{margin-bottom:2px}
+  .panel{padding:22px;display:flex;flex-direction:column;gap:22px;background:var(--panel)}
+  .block{display:flex;flex-direction:column;gap:12px}
 
-  .toggle{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:11px 13px;
-  }
-  .toggle label{font-size:13px; font-weight:600}
-  .toggle small{display:block; color:var(--muted); font-weight:400; font-size:11px; margin-top:1px}
-  .sw{position:relative; width:42px; height:24px; flex:0 0 42px}
-  .sw input{opacity:0; width:100%; height:100%; margin:0; cursor:pointer}
-  .sw .track{position:absolute; inset:0; background:var(--line); border-radius:20px; transition:.18s}
-  .sw .track::after{content:""; position:absolute; top:3px; left:3px; width:18px; height:18px;
-    background:#fff; border-radius:50%; transition:.18s}
+  .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
+  .toggle label{font-size:13px;font-weight:600}
+  .toggle small{display:block;color:var(--muted);font-weight:400;font-size:11px;margin-top:1px}
+  .sw{position:relative;width:42px;height:24px;flex:0 0 42px}
+  .sw input{opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .sw .track{position:absolute;inset:0;background:var(--line);border-radius:20px;transition:.18s}
+  .sw .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.18s}
   .sw input:checked + .track{background:var(--good)}
   .sw input:checked + .track::after{transform:translateX(18px)}
 
-  .field{display:flex; flex-direction:column; gap:7px}
-  .field input[type=text]{
-    background:var(--panel2); border:1px solid var(--line); color:var(--text);
-    border-radius:8px; padding:10px 12px; font-size:13px; font-family:var(--mono);
-  }
-  .field input[type=text]:focus{outline:none; border-color:var(--accent)}
+  .field input[type=text]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px 12px;font-size:13px;font-family:var(--mono)}
+  .field input[type=text]:focus{outline:none;border-color:var(--accent)}
 
-  /* ---- Spec instrument ---- */
-  .spec{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:14px}
-  .checklist{display:flex; flex-direction:column; gap:9px}
-  .check{display:flex; align-items:center; gap:9px; font-size:12.5px}
-  .check .dot{width:16px; height:16px; border-radius:50%; flex:0 0 16px; display:grid; place-items:center;
-    background:var(--line); color:#0E1014; font-size:10px; font-weight:800}
+  .spec{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:14px}
+  .checklist{display:flex;flex-direction:column;gap:9px}
+  .check{display:flex;align-items:center;gap:9px;font-size:12.5px}
+  .check .dot{width:16px;height:16px;border-radius:50%;flex:0 0 16px;display:grid;place-items:center;background:var(--line);color:#0E1014;font-size:10px;font-weight:800}
   .check.ok .dot{background:var(--good)}
   .check.bad .dot{background:var(--bad)}
-  .check .label{flex:1; color:var(--muted)}
-  .check .read{font-family:var(--mono); font-size:12px; color:var(--text)}
+  .check .label{flex:1;color:var(--muted)}
+  .check .read{font-family:var(--mono);font-size:12px;color:var(--text)}
 
-  .gauge{display:flex; flex-direction:column; gap:6px}
-  .gauge .bar{position:relative; height:14px; border-radius:7px; background:var(--bg); overflow:hidden; border:1px solid var(--line)}
-  .gauge .band{position:absolute; top:0; bottom:0; background:rgba(40,199,111,.22); border-left:1px solid var(--good); border-right:1px solid var(--good)}
-  .gauge .needle{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--accent); transition:left .2s; box-shadow:0 0 6px var(--accent)}
-  .gauge .scale{display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--muted)}
+  .gauge{display:flex;flex-direction:column;gap:6px}
+  .gauge .bar{position:relative;height:14px;border-radius:7px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+  .gauge .band{position:absolute;top:0;bottom:0;background:rgba(40,199,111,.22);border-left:1px solid var(--good);border-right:1px solid var(--good)}
+  .gauge .needle{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--accent);transition:left .2s;box-shadow:0 0 6px var(--accent)}
+  .gauge .scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted)}
 
-  .status{
-    text-align:center; font-weight:700; font-size:13px; padding:9px; border-radius:8px;
-    background:var(--line); color:var(--muted); letter-spacing:.02em;
-  }
-  .status.ok{background:rgba(40,199,111,.15); color:var(--good)}
-  .status.warn{background:rgba(244,165,42,.15); color:var(--warn)}
-  .status.busy{background:rgba(76,141,255,.15); color:var(--accent)}
+  .status{text-align:center;font-weight:700;font-size:13px;padding:9px;border-radius:8px;background:var(--line);color:var(--muted);letter-spacing:.02em}
+  .status.ok{background:rgba(40,199,111,.15);color:var(--good)}
+  .status.warn{background:rgba(244,165,42,.15);color:var(--warn)}
+  .status.busy{background:rgba(76,141,255,.15);color:var(--accent)}
 
-  .btn-primary{
-    width:100%; background:var(--accent); color:#08101f; padding:13px; font-size:14px;
-  }
+  .btn-primary{width:100%;background:var(--accent);color:#08101f;padding:13px;font-size:14px}
   .btn-primary:hover{filter:brightness(1.07)}
-  .btn-primary:disabled{opacity:.4; cursor:not-allowed; filter:none}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;filter:none}
 
-  .hint{font-size:11px; color:var(--muted); line-height:1.5}
-  .hint b{color:var(--text); font-weight:600}
+  .hint{font-size:11px;color:var(--muted);line-height:1.5}
+  .hint b{color:var(--text);font-weight:600}
 </style>
 </head>
 <body>
@@ -172,28 +116,31 @@
   </header>
 
   <div class="wrap">
-    <!-- STAGE -->
     <section class="stage">
       <div class="frame" id="frame">
         <canvas id="editor" width="600" height="800"></canvas>
         <div class="guide"></div>
         <div class="dropzone" id="dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/>
-            <path d="M21 15l-5-5L5 21"/>
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>
           </svg>
           <div class="big">Add student photo</div>
-          <div class="micro">Tap to choose &nbsp;·&nbsp; or drop image here</div>
+          <div class="micro">Tap to choose · or drop image here</div>
+        </div>
+        <div class="overlay" id="overlay">
+          <div class="spinner"></div>
+          <div class="t" id="ovText">Removing background…</div>
+          <div class="s" id="ovSub">first time downloads the AI model</div>
         </div>
       </div>
 
       <div class="stage-controls">
         <div class="row">
-          <span class="micro">Zoom</span>
+          <span class="micro" style="flex:0 0 64px">Zoom</span>
           <input type="range" id="zoom" min="1" max="3" step="0.01" value="1" disabled>
           <span class="val mono" id="zoomVal">1.0×</span>
         </div>
-        <div class="micro" style="text-align:center;opacity:.8">Drag the photo to centre the face inside the guide</div>
+        <div class="micro" style="text-align:center;opacity:.8">Drag the photo to centre the face in the guide</div>
       </div>
 
       <div class="stage-actions">
@@ -202,45 +149,36 @@
       </div>
     </section>
 
-    <!-- PANEL -->
     <aside class="panel">
       <div class="block">
         <span class="micro">Background</span>
         <div class="toggle">
-          <div>
-            <label for="whiteOn">Make background white</label>
-            <small>Best with a plain backdrop</small>
-          </div>
+          <div><label for="whiteOn">Make background white</label><small id="bgSub">AI cut-out · works on any background</small></div>
           <span class="sw"><input type="checkbox" id="whiteOn" checked><span class="track"></span></span>
         </div>
-        <div class="row">
-          <span class="micro">Strength</span>
-          <input type="range" id="tol" min="12" max="110" step="1" value="48">
-          <span class="val mono" id="tolVal">48</span>
+        <div class="row" id="tolRow" style="display:none">
+          <span class="micro" style="flex:0 0 64px">Strength</span>
+          <input type="range" id="tol" min="12" max="120" step="1" value="55">
+          <span class="val mono" id="tolVal">55</span>
         </div>
-        <div class="hint">If parts of the photo turn white by mistake, lower the strength. If background still shows, raise it.</div>
+        <div class="hint" id="bgHint">The subject is cut out automatically and placed on white. If the model can't load, a simpler plain-background mode is used instead.</div>
       </div>
 
       <div class="block">
         <span class="micro">File name</span>
-        <div class="field">
-          <input type="text" id="fname" value="admission_photo" spellcheck="false">
-        </div>
+        <div class="field"><input type="text" id="fname" value="admission_photo" spellcheck="false"></div>
       </div>
 
       <div class="block">
         <span class="micro">Spec check</span>
         <div class="spec">
           <div class="checklist">
-            <div class="check" id="ckDim"><span class="dot">✓</span><span class="label">Resolution</span><span class="read" id="ckDimRead">600 × 800</span></div>
-            <div class="check" id="ckBg"><span class="dot">✓</span><span class="label">Background</span><span class="read" id="ckBgRead">white</span></div>
-            <div class="check" id="ckSize"><span class="dot">✓</span><span class="label">File size</span><span class="read" id="ckSizeRead">—</span></div>
+            <div class="check ok" id="ckDim"><span class="dot">✓</span><span class="label">Resolution</span><span class="read">600 × 800</span></div>
+            <div class="check" id="ckBg"><span class="dot">·</span><span class="label">Background</span><span class="read" id="ckBgRead">—</span></div>
+            <div class="check" id="ckSize"><span class="dot">·</span><span class="label">File size</span><span class="read" id="ckSizeRead">—</span></div>
           </div>
           <div class="gauge">
-            <div class="bar">
-              <div class="band" id="band"></div>
-              <div class="needle" id="needle" style="left:0%"></div>
-            </div>
+            <div class="bar"><div class="band" id="band"></div><div class="needle" id="needle" style="left:-2%"></div></div>
             <div class="scale"><span>0</span><span>10</span><span>25</span><span>40 KB</span></div>
           </div>
         </div>
@@ -248,229 +186,201 @@
       </div>
 
       <button class="btn-primary" id="downloadBtn" disabled>Download photo</button>
-      <div class="hint">Everything runs on your device — photos are never uploaded anywhere.</div>
+      <div class="hint">Everything runs in your browser — photos are never uploaded to any server.</div>
     </aside>
   </div>
 
   <input type="file" id="fileInput" accept="image/*" hidden>
 
-<script>
-(function(){
-  const CW=600, CH=800;
-  const MINB=10*1024, MAXB=25*1024;        // size band in bytes
-  const GAUGE_MAX=40*1024;                  // gauge full-scale
+<script type="module">
+  const CW=600, CH=800, MINB=10*1024, MAXB=25*1024, GAUGE_MAX=40*1024;
 
-  const frame=document.getElementById('frame');
-  const canvas=document.getElementById('editor');
-  const ctx=canvas.getContext('2d',{willReadFrequently:true});
-  const dropzone=document.getElementById('dropzone');
-  const fileInput=document.getElementById('fileInput');
-  const zoom=document.getElementById('zoom'), zoomVal=document.getElementById('zoomVal');
-  const tol=document.getElementById('tol'), tolVal=document.getElementById('tolVal');
-  const whiteOn=document.getElementById('whiteOn');
-  const fname=document.getElementById('fname');
-  const status=document.getElementById('status');
-  const needle=document.getElementById('needle'), band=document.getElementById('band');
-  const ckSize=document.getElementById('ckSize'), ckSizeRead=document.getElementById('ckSizeRead');
-  const ckBg=document.getElementById('ckBg'), ckBgRead=document.getElementById('ckBgRead');
-  const downloadBtn=document.getElementById('downloadBtn');
+  const $=id=>document.getElementById(id);
+  const frame=$('frame'), canvas=$('editor'), ctx=canvas.getContext('2d',{willReadFrequently:true});
+  const dropzone=$('dropzone'), fileInput=$('fileInput');
+  const zoom=$('zoom'), zoomVal=$('zoomVal'), tol=$('tol'), tolVal=$('tolVal'), tolRow=$('tolRow');
+  const whiteOn=$('whiteOn'), fname=$('fname'), status=$('status');
+  const needle=$('needle'), band=$('band');
+  const ckSize=$('ckSize'), ckSizeRead=$('ckSizeRead'), ckBg=$('ckBg'), ckBgRead=$('ckBgRead');
+  const downloadBtn=$('downloadBtn'), overlay=$('overlay'), ovText=$('ovText'), ovSub=$('ovSub'), bgSub=$('bgSub');
 
-  let img=null, baseScale=1, offX=0, offY=0;       // transform state (canvas px)
+  let img=null, originalFile=null, fgImg=null;        // original + AI foreground (transparent)
+  let baseScale=1, offX=0, offY=0;
   let lastBlob=null, finalizeTimer=null, encodeToken=0;
+  let removeBg=null, aiTried=false, aiReady=false;
 
-  // position the size band on the gauge once
-  band.style.left = (MINB/GAUGE_MAX*100)+'%';
-  band.style.width = ((MAXB-MINB)/GAUGE_MAX*100)+'%';
+  band.style.left=(MINB/GAUGE_MAX*100)+'%';
+  band.style.width=((MAXB-MINB)/GAUGE_MAX*100)+'%';
 
-  /* ---------- file loading ---------- */
+  /* ---------- AI model (loaded on demand, with graceful fallback) ---------- */
+  async function ensureAI(){
+    if(aiTried) return aiReady;
+    aiTried=true;
+    try{
+      const mod=await import('https://esm.sh/@imgly/background-removal@1.6.0');
+      removeBg=mod.removeBackground; aiReady=true;
+    }catch(e){ aiReady=false; }
+    return aiReady;
+  }
+
+  function blobToImage(blob){return new Promise((res,rej)=>{const u=URL.createObjectURL(blob);const im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=rej;im.src=u;});}
+
+  /* ---------- load photo ---------- */
   function loadFile(file){
     if(!file || !file.type.startsWith('image/')) return;
-    const url=URL.createObjectURL(file);
-    const im=new Image();
-    im.onload=()=>{
-      img=im; URL.revokeObjectURL(url);
-      baseScale=Math.max(CW/img.width, CH/img.height); // cover
-      offX=0; offY=0;
+    originalFile=file;
+    const url=URL.createObjectURL(file), im=new Image();
+    im.onload=async ()=>{
+      img=im; URL.revokeObjectURL(url); fgImg=null;
+      baseScale=Math.max(CW/img.width,CH/img.height); offX=0; offY=0;
       zoom.value=1; zoom.disabled=false; zoomVal.textContent='1.0×';
       frame.classList.add('has-image');
-      const dot=fname.value.includes('.')?'':''; // keep name as-is
+      await prepareBackground();
       finalize();
     };
     im.src=url;
   }
   dropzone.addEventListener('click',()=>fileInput.click());
-  document.getElementById('changeBtn').addEventListener('click',()=>fileInput.click());
+  $('changeBtn').addEventListener('click',()=>fileInput.click());
   fileInput.addEventListener('change',e=>loadFile(e.target.files[0]));
-  ;['dragenter','dragover'].forEach(ev=>frame.addEventListener(ev,e=>{e.preventDefault();frame.classList.add('dragover')}));
-  ;['dragleave','drop'].forEach(ev=>frame.addEventListener(ev,e=>{e.preventDefault();frame.classList.remove('dragover')}));
-  frame.addEventListener('drop',e=>{ if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+  ['dragenter','dragover'].forEach(ev=>frame.addEventListener(ev,e=>{e.preventDefault();frame.classList.add('dragover')}));
+  ['dragleave','drop'].forEach(ev=>frame.addEventListener(ev,e=>{e.preventDefault();frame.classList.remove('dragover')}));
+  frame.addEventListener('drop',e=>{if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0])});
 
-  /* ---------- transform helpers ---------- */
-  function effScale(){ return baseScale*parseFloat(zoom.value); }
+  /* ---------- background preparation (runs once per photo) ---------- */
+  async function prepareBackground(){
+    fgImg=null; tolRow.style.display='none';
+    if(!whiteOn.checked || !img) return;
+    overlay.classList.add('show'); ovText.textContent='Removing background…'; ovSub.textContent='first time downloads the AI model';
+    if(await ensureAI()){
+      try{
+        const blob=await removeBg(originalFile,{
+          model:'isnet_quint8',
+          output:{format:'image/png'},
+          progress:(key,cur,tot)=>{ if(/fetch|download/i.test(key)&&tot) ovSub.textContent='loading model '+Math.round(cur/tot*100)+'%'; else ovSub.textContent='processing…'; }
+        });
+        fgImg=await blobToImage(blob);
+        bgSub.textContent='AI cut-out · works on any background';
+      }catch(e){ fgImg=null; }
+    }
+    if(!fgImg){ // fallback: plain-background mode with manual strength
+      tolRow.style.display='flex';
+      bgSub.textContent='plain-background mode (AI unavailable)';
+    }
+    overlay.classList.remove('show');
+  }
+
+  /* ---------- drawing ---------- */
+  function effScale(){return baseScale*parseFloat(zoom.value)}
   function clampOffsets(){
-    const s=effScale();
-    const dw=img.width*s, dh=img.height*s;
+    const s=effScale(), src=(whiteOn.checked&&fgImg)?fgImg:img;
+    const dw=src.width*s, dh=src.height*s;
     const mx=Math.max(0,(dw-CW)/2), my=Math.max(0,(dh-CH)/2);
-    offX=Math.max(-mx,Math.min(mx,offX));
-    offY=Math.max(-my,Math.min(my,offY));
+    offX=Math.max(-mx,Math.min(mx,offX)); offY=Math.max(-my,Math.min(my,offY));
   }
   function drawRaw(){
-    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,CW,CH);
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,CW,CH);
     if(!img) return;
     clampOffsets();
-    const s=effScale();
-    const dw=img.width*s, dh=img.height*s;
-    const x=(CW-dw)/2+offX, y=(CH-dh)/2+offY;
+    const s=effScale(), src=(whiteOn.checked&&fgImg)?fgImg:img;
+    const dw=src.width*s, dh=src.height*s, x=(CW-dw)/2+offX, y=(CH-dh)/2+offY;
     ctx.imageSmoothingQuality='high';
-    ctx.drawImage(img,x,y,dw,dh);
+    ctx.drawImage(src,x,y,dw,dh);
   }
 
-  /* ---------- white background via border flood-fill ---------- */
+  /* ---------- fallback flood-fill whitening (plain backgrounds only) ---------- */
   function applyWhite(strength){
-    const id=ctx.getImageData(0,0,CW,CH);
-    const d=id.data, n=CW*CH;
-    // sample background colour from the four corners (8x8 blocks)
-    let r=0,g=0,b=0,c=0;
-    const corners=[[0,0],[CW-8,0],[0,CH-8],[CW-8,CH-8]];
-    for(const [cx,cy] of corners){
-      for(let y=0;y<8;y++)for(let x=0;x<8;x++){
-        const i=((cy+y)*CW+(cx+x))*4; r+=d[i]; g+=d[i+1]; b+=d[i+2]; c++;
-      }
-    }
-    r/=c; g/=c; b/=c;
-    const tol2=strength*strength;
-    const visited=new Uint8Array(n);
-    const stack=[];
-    // seed from every border pixel
-    for(let x=0;x<CW;x++){ stack.push(x); stack.push((CH-1)*CW+x); }
-    for(let y=0;y<CH;y++){ stack.push(y*CW); stack.push(y*CW+CW-1); }
+    const id=ctx.getImageData(0,0,CW,CH), d=id.data, n=CW*CH;
+    let r=0,g=0,b=0,c=0; // sample a border ring
+    const sample=(x,y)=>{const i=(y*CW+x)*4;r+=d[i];g+=d[i+1];b+=d[i+2];c++};
+    for(let x=0;x<CW;x+=2){for(let t=0;t<6;t++){sample(x,t);sample(x,CH-1-t)}}
+    for(let y=0;y<CH;y+=2){for(let t=0;t<6;t++){sample(t,y);sample(CW-1-t,y)}}
+    r/=c;g/=c;b/=c;
+    const tol2=strength*strength, visited=new Uint8Array(n), stack=[];
+    for(let x=0;x<CW;x++){stack.push(x);stack.push((CH-1)*CW+x)}
+    for(let y=0;y<CH;y++){stack.push(y*CW);stack.push(y*CW+CW-1)}
     while(stack.length){
-      const p=stack.pop();
-      if(visited[p]) continue;
-      visited[p]=1;
-      const i=p*4;
-      const dr=d[i]-r, dg=d[i+1]-g, db=d[i+2]-b;
-      if(dr*dr+dg*dg+db*db>tol2) continue;     // not background -> boundary, stop
-      d[i]=255; d[i+1]=255; d[i+2]=255;
+      const p=stack.pop(); if(visited[p])continue; visited[p]=1;
+      const i=p*4, dr=d[i]-r, dg=d[i+1]-g, db=d[i+2]-b;
+      if(dr*dr+dg*dg+db*db>tol2)continue;
+      d[i]=255;d[i+1]=255;d[i+2]=255;
       const x=p%CW, y=(p/CW)|0;
-      if(x>0) stack.push(p-1);
-      if(x<CW-1) stack.push(p+1);
-      if(y>0) stack.push(p-CW);
-      if(y<CH-1) stack.push(p+CW);
+      if(x>0)stack.push(p-1); if(x<CW-1)stack.push(p+1);
+      if(y>0)stack.push(p-CW); if(y<CH-1)stack.push(p+CW);
     }
-    // light edge softening: blend boundary pixels 40% toward white
-    for(let p=0;p<n;p++){
-      if(visited[p]) continue;
-      const x=p%CW, y=(p/CW)|0;
-      let near=false;
+    for(let p=0;p<n;p++){ if(visited[p])continue;
+      const x=p%CW,y=(p/CW)|0; let near=false;
       if(x>0&&visited[p-1])near=true; else if(x<CW-1&&visited[p+1])near=true;
       else if(y>0&&visited[p-CW])near=true; else if(y<CH-1&&visited[p+CW])near=true;
-      if(near){ const i=p*4; d[i]+=(255-d[i])*0.4; d[i+1]+=(255-d[i+1])*0.4; d[i+2]+=(255-d[i+2])*0.4; }
+      if(near){const i=p*4;d[i]+=(255-d[i])*.4;d[i+1]+=(255-d[i+1])*.4;d[i+2]+=(255-d[i+2])*.4}
     }
     ctx.putImageData(id,0,0);
   }
 
-  /* ---------- compress to land inside the KB band ---------- */
-  function toBlob(q){ return new Promise(res=>canvas.toBlob(res,'image/jpeg',q)); }
+  /* ---------- compress: never exceeds 25 KB ---------- */
+  function toBlob(q){return new Promise(res=>canvas.toBlob(res,'image/jpeg',q))}
   async function encodeToTarget(){
-    let lo=0.05, hi=0.95, best=null;
-    for(let i=0;i<9;i++){
-      const mid=(lo+hi)/2;
-      const blob=await toBlob(mid);
-      if(blob.size<=MAXB){ best=blob; lo=mid; } else { hi=mid; }
+    let lo=0.02, hi=0.96, best=null;
+    for(let i=0;i<10;i++){
+      const mid=(lo+hi)/2, blob=await toBlob(mid); if(!blob)continue;
+      if(blob.size<=MAXB){best=blob;lo=mid} else {hi=mid}
     }
-    if(!best) best=await toBlob(0.05);          // even lowest q above band (rare)
-    if(best.size<MINB){                         // very flat image -> push quality up
-      const hq=await toBlob(0.98);
-      if(hq.size<=MAXB && hq.size>best.size) best=hq;
-    }
+    if(!best) best=await toBlob(0.02);
+    if(best && best.size<MINB){const hq=await toBlob(0.98); if(hq&&hq.size<=MAXB&&hq.size>best.size)best=hq}
     return best;
   }
 
-  /* ---------- full pipeline ---------- */
+  /* ---------- pipeline ---------- */
   async function finalize(){
     if(!img) return;
     const token=++encodeToken;
-    setStatus('busy','Processing…');
-    downloadBtn.disabled=true;
+    setStatus('busy','Processing…'); downloadBtn.disabled=true;
     drawRaw();
-    if(whiteOn.checked) applyWhite(parseInt(tol.value,10));
+    if(whiteOn.checked && !fgImg) applyWhite(parseInt(tol.value,10)); // fallback path only
     const blob=await encodeToTarget();
-    if(token!==encodeToken) return;             // a newer edit superseded this run
-    lastBlob=blob;
-    updateSpec(blob.size);
-    downloadBtn.disabled=false;
+    if(token!==encodeToken) return;
+    lastBlob=blob; updateSpec(blob?blob.size:0); downloadBtn.disabled=!blob;
   }
-  function scheduleFinalize(){ clearTimeout(finalizeTimer); finalizeTimer=setTimeout(finalize,160); }
+  function scheduleFinalize(){clearTimeout(finalizeTimer);finalizeTimer=setTimeout(finalize,160)}
 
   /* ---------- spec readout ---------- */
-  function setStatus(kind,text){ status.className='status '+kind; status.textContent=text; }
-  function fmtKB(b){ return (b/1024).toFixed(1)+' KB'; }
+  function setStatus(k,t){status.className='status '+k;status.textContent=t}
+  function fmtKB(b){return (b/1024).toFixed(1)+' KB'}
   function updateSpec(bytes){
-    // size check
-    const inBand = bytes>=MINB && bytes<=MAXB;
-    ckSizeRead.textContent=fmtKB(bytes);
-    ckSize.className='check '+(inBand?'ok':'bad');
-    ckSize.querySelector('.dot').textContent=inBand?'✓':'!';
+    const inBand=bytes>=MINB&&bytes<=MAXB;
+    ckSizeRead.textContent=bytes?fmtKB(bytes):'—';
+    ckSize.className='check '+(inBand?'ok':'bad'); ckSize.querySelector('.dot').textContent=inBand?'✓':'!';
     needle.style.left=Math.min(100,bytes/GAUGE_MAX*100)+'%';
-    // background check
-    ckBgRead.textContent=whiteOn.checked?'white':'original';
-    ckBg.className='check '+(whiteOn.checked?'ok':'');
-    ckBg.querySelector('.dot').textContent=whiteOn.checked?'✓':'·';
-    // overall
-    if(inBand && whiteOn.checked) setStatus('ok','Ready for admission form ✓');
+    const on=whiteOn.checked;
+    ckBgRead.textContent=on?(fgImg?'white (AI)':'white'):'original';
+    ckBg.className='check '+(on?'ok':''); ckBg.querySelector('.dot').textContent=on?'✓':'·';
+    if(inBand&&on) setStatus('ok','Ready for admission form ✓');
     else if(inBand) setStatus('ok','Size & resolution ✓');
-    else if(bytes>MAXB) setStatus('warn','Slightly over 25 KB — try less zoom');
-    else setStatus('warn','Under 10 KB — image is very plain');
+    else if(bytes>MAXB) setStatus('warn','Over 25 KB — try less zoom');
+    else if(bytes>0) setStatus('warn','Under 10 KB — image is very plain');
   }
 
   /* ---------- interaction ---------- */
-  let dragging=false, lastX=0, lastY=0;
-  function ptr(e){ const t=e.touches?e.touches[0]:e; return {x:t.clientX,y:t.clientY}; }
-  canvas.addEventListener('pointerdown',e=>{
-    if(!img) return; dragging=true; canvas.classList.add('dragging');
-    const p=ptr(e); lastX=p.x; lastY=p.y; canvas.setPointerCapture(e.pointerId);
-  });
-  canvas.addEventListener('pointermove',e=>{
-    if(!dragging) return;
-    const p=ptr(e);
-    const rect=canvas.getBoundingClientRect();
-    const sx=CW/rect.width, sy=CH/rect.height;
-    offX+=(p.x-lastX)*sx; offY+=(p.y-lastY)*sy;
-    lastX=p.x; lastY=p.y;
-    drawRaw();                       // fast preview without whitening while dragging
-  });
-  function endDrag(){ if(dragging){ dragging=false; canvas.classList.remove('dragging'); scheduleFinalize(); } }
-  canvas.addEventListener('pointerup',endDrag);
-  canvas.addEventListener('pointercancel',endDrag);
-  canvas.addEventListener('wheel',e=>{
-    if(!img) return; e.preventDefault();
-    let z=parseFloat(zoom.value)*(e.deltaY<0?1.06:0.94);
-    z=Math.max(1,Math.min(3,z)); zoom.value=z; zoomVal.textContent=z.toFixed(1)+'×';
-    drawRaw(); scheduleFinalize();
-  },{passive:false});
+  let dragging=false,lastX=0,lastY=0;
+  const ptr=e=>{const t=e.touches?e.touches[0]:e;return{x:t.clientX,y:t.clientY}};
+  canvas.addEventListener('pointerdown',e=>{if(!img)return;dragging=true;canvas.classList.add('dragging');const p=ptr(e);lastX=p.x;lastY=p.y;canvas.setPointerCapture(e.pointerId)});
+  canvas.addEventListener('pointermove',e=>{if(!dragging)return;const p=ptr(e),rc=canvas.getBoundingClientRect();offX+=(p.x-lastX)*(CW/rc.width);offY+=(p.y-lastY)*(CH/rc.height);lastX=p.x;lastY=p.y;drawRaw()});
+  const endDrag=()=>{if(dragging){dragging=false;canvas.classList.remove('dragging');scheduleFinalize()}};
+  canvas.addEventListener('pointerup',endDrag); canvas.addEventListener('pointercancel',endDrag);
+  canvas.addEventListener('wheel',e=>{if(!img)return;e.preventDefault();let z=parseFloat(zoom.value)*(e.deltaY<0?1.06:.94);z=Math.max(1,Math.min(3,z));zoom.value=z;zoomVal.textContent=z.toFixed(1)+'×';drawRaw();scheduleFinalize()},{passive:false});
 
-  zoom.addEventListener('input',()=>{ zoomVal.textContent=parseFloat(zoom.value).toFixed(1)+'×'; drawRaw(); scheduleFinalize(); });
-  tol.addEventListener('input',()=>{ tolVal.textContent=tol.value; if(whiteOn.checked) scheduleFinalize(); });
-  whiteOn.addEventListener('change',()=>{ tol.disabled=!whiteOn.checked; finalize(); });
-  document.getElementById('resetBtn').addEventListener('click',()=>{
-    if(!img) return; offX=0; offY=0; zoom.value=1; zoomVal.textContent='1.0×'; finalize();
-  });
+  zoom.addEventListener('input',()=>{zoomVal.textContent=parseFloat(zoom.value).toFixed(1)+'×';drawRaw();scheduleFinalize()});
+  tol.addEventListener('input',()=>{tolVal.textContent=tol.value;if(whiteOn.checked&&!fgImg)scheduleFinalize()});
+  whiteOn.addEventListener('change',async()=>{await prepareBackground();finalize()});
+  $('resetBtn').addEventListener('click',()=>{if(!img)return;offX=0;offY=0;zoom.value=1;zoomVal.textContent='1.0×';finalize()});
 
-  /* ---------- download ---------- */
   downloadBtn.addEventListener('click',()=>{
-    if(!lastBlob) return;
+    if(!lastBlob)return;
     let name=(fname.value.trim()||'admission_photo').replace(/[^\w\-]+/g,'_');
-    if(!/\.jpe?g$/i.test(name)) name+='.jpg';
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(lastBlob); a.download=name;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+    if(!/\.jpe?g$/i.test(name))name+='.jpg';
+    const a=document.createElement('a'); a.href=URL.createObjectURL(lastBlob); a.download=name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   });
-
-  // initial gauge needle hidden
-  needle.style.left='-2%';
-})();
 </script>
 </body>
 </html>
