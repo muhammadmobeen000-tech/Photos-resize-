@@ -45,13 +45,6 @@
   .dropzone .big{color:var(--text);font-weight:600;font-size:14px}
   .frame.dragover{outline:2px solid var(--accent);outline-offset:-2px}
 
-  .overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(10,12,16,.82);backdrop-filter:blur(2px);color:var(--text);text-align:center;padding:18px}
-  .overlay.show{display:flex}
-  .spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:spin .8s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .overlay .t{font-size:13px;font-weight:600}
-  .overlay .s{font-size:11px;color:var(--muted);font-family:var(--mono)}
-
   .stage-controls{width:300px;max-width:100%;display:flex;flex-direction:column;gap:14px}
   .row{display:flex;align-items:center;gap:12px}
   input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:4px;background:var(--line);outline:none}
@@ -67,16 +60,6 @@
 
   .panel{padding:22px;display:flex;flex-direction:column;gap:22px;background:var(--panel)}
   .block{display:flex;flex-direction:column;gap:12px}
-
-  .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
-  .toggle label{font-size:13px;font-weight:600}
-  .toggle small{display:block;color:var(--muted);font-weight:400;font-size:11px;margin-top:1px}
-  .sw{position:relative;width:42px;height:24px;flex:0 0 42px}
-  .sw input{opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
-  .sw .track{position:absolute;inset:0;background:var(--line);border-radius:20px;transition:.18s}
-  .sw .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.18s}
-  .sw input:checked + .track{background:var(--good)}
-  .sw input:checked + .track::after{transform:translateX(18px)}
 
   .field input[type=text]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px 12px;font-size:13px;font-family:var(--mono)}
   .field input[type=text]:focus{outline:none;border-color:var(--accent)}
@@ -106,13 +89,12 @@
   .btn-primary:disabled{opacity:.4;cursor:not-allowed;filter:none}
 
   .hint{font-size:11px;color:var(--muted);line-height:1.5}
-  .hint b{color:var(--text);font-weight:600}
 </style>
 </head>
 <body>
   <header class="app">
     <h1>Admission Photo Studio</h1>
-    <div class="spec-strip mono">Target: <b>600×800</b> · <b>10–20&nbsp;KB</b> · <b>white background</b></div>
+    <div class="spec-strip mono">Target: <b>600×800</b> · <b>10–22&nbsp;KB</b></div>
   </header>
 
   <div class="wrap">
@@ -126,11 +108,6 @@
           </svg>
           <div class="big">Add student photo</div>
           <div class="micro">Tap to choose · or drop image here</div>
-        </div>
-        <div class="overlay" id="overlay">
-          <div class="spinner"></div>
-          <div class="t" id="ovText">Removing background…</div>
-          <div class="s" id="ovSub">first time downloads the AI model</div>
         </div>
       </div>
 
@@ -151,20 +128,6 @@
 
     <aside class="panel">
       <div class="block">
-        <span class="micro">Background</span>
-        <div class="toggle">
-          <div><label for="whiteOn">Make background white</label><small id="bgSub">AI cut-out · works on any background</small></div>
-          <span class="sw"><input type="checkbox" id="whiteOn" checked><span class="track"></span></span>
-        </div>
-        <div class="row" id="tolRow" style="display:none">
-          <span class="micro" style="flex:0 0 64px">Strength</span>
-          <input type="range" id="tol" min="12" max="120" step="1" value="55">
-          <span class="val mono" id="tolVal">55</span>
-        </div>
-        <div class="hint" id="bgHint">The subject is cut out automatically and placed on white. If the model can't load, a simpler plain-background mode is used instead.</div>
-      </div>
-
-      <div class="block">
         <span class="micro">File name</span>
         <div class="field"><input type="text" id="fname" value="admission_photo" spellcheck="false"></div>
       </div>
@@ -174,12 +137,11 @@
         <div class="spec">
           <div class="checklist">
             <div class="check ok" id="ckDim"><span class="dot">✓</span><span class="label">Resolution</span><span class="read">600 × 800</span></div>
-            <div class="check" id="ckBg"><span class="dot">·</span><span class="label">Background</span><span class="read" id="ckBgRead">—</span></div>
             <div class="check" id="ckSize"><span class="dot">·</span><span class="label">File size</span><span class="read" id="ckSizeRead">—</span></div>
           </div>
           <div class="gauge">
             <div class="bar"><div class="band" id="band"></div><div class="needle" id="needle" style="left:-2%"></div></div>
-            <div class="scale"><span>0</span><span>10</span><span>20</span><span>30 KB</span></div>
+            <div class="scale"><span>0</span><span>10</span><span>22</span><span>30 KB</span></div>
           </div>
         </div>
         <div class="status" id="status">Add a photo to begin</div>
@@ -192,51 +154,32 @@
 
   <input type="file" id="fileInput" accept="image/*" hidden>
 
-<script type="module">
-  const CW=600, CH=800, MINB=10*1024, MAXB=20*1024, GAUGE_MAX=30*1024;
+<script>
+(function(){
+  const CW=600, CH=800, MINB=10*1024, MAXB=22*1024, GAUGE_MAX=30*1024;
 
   const $=id=>document.getElementById(id);
-  const frame=$('frame'), canvas=$('editor'), ctx=canvas.getContext('2d',{willReadFrequently:true});
+  const frame=$('frame'), canvas=$('editor'), ctx=canvas.getContext('2d');
   const dropzone=$('dropzone'), fileInput=$('fileInput');
-  const zoom=$('zoom'), zoomVal=$('zoomVal'), tol=$('tol'), tolVal=$('tolVal'), tolRow=$('tolRow');
-  const whiteOn=$('whiteOn'), fname=$('fname'), status=$('status');
+  const zoom=$('zoom'), zoomVal=$('zoomVal'), fname=$('fname'), status=$('status');
   const needle=$('needle'), band=$('band');
-  const ckSize=$('ckSize'), ckSizeRead=$('ckSizeRead'), ckBg=$('ckBg'), ckBgRead=$('ckBgRead');
-  const downloadBtn=$('downloadBtn'), overlay=$('overlay'), ovText=$('ovText'), ovSub=$('ovSub'), bgSub=$('bgSub');
+  const ckSize=$('ckSize'), ckSizeRead=$('ckSizeRead'), downloadBtn=$('downloadBtn');
 
-  let img=null, originalFile=null, fgImg=null;        // original + AI foreground (transparent)
-  let baseScale=1, offX=0, offY=0;
+  let img=null, baseScale=1, offX=0, offY=0;
   let lastBlob=null, finalizeTimer=null, encodeToken=0;
-  let removeBg=null, aiTried=false, aiReady=false;
 
   band.style.left=(MINB/GAUGE_MAX*100)+'%';
   band.style.width=((MAXB-MINB)/GAUGE_MAX*100)+'%';
 
-  /* ---------- AI model (loaded on demand, with graceful fallback) ---------- */
-  async function ensureAI(){
-    if(aiTried) return aiReady;
-    aiTried=true;
-    try{
-      const mod=await import('https://esm.sh/@imgly/background-removal@1.6.0');
-      removeBg=mod.removeBackground; aiReady=true;
-    }catch(e){ aiReady=false; }
-    return aiReady;
-  }
-
-  function blobToImage(blob){return new Promise((res,rej)=>{const u=URL.createObjectURL(blob);const im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=rej;im.src=u;});}
-
   /* ---------- load photo ---------- */
   function loadFile(file){
     if(!file || !file.type.startsWith('image/')) return;
-    originalFile=file;
     const url=URL.createObjectURL(file), im=new Image();
-    im.onload=async ()=>{
-      img=im; URL.revokeObjectURL(url); fgImg=null;
+    im.onload=()=>{
+      img=im; URL.revokeObjectURL(url);
       baseScale=Math.max(CW/img.width,CH/img.height); offX=0; offY=0;
       zoom.value=1; zoom.disabled=false; zoomVal.textContent='1.0×';
-      frame.classList.add('has-image');
-      await prepareBackground();
-      finalize();
+      frame.classList.add('has-image'); finalize();
     };
     im.src=url;
   }
@@ -247,34 +190,10 @@
   ['dragleave','drop'].forEach(ev=>frame.addEventListener(ev,e=>{e.preventDefault();frame.classList.remove('dragover')}));
   frame.addEventListener('drop',e=>{if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0])});
 
-  /* ---------- background preparation (runs once per photo) ---------- */
-  async function prepareBackground(){
-    fgImg=null; tolRow.style.display='none';
-    if(!whiteOn.checked || !img) return;
-    overlay.classList.add('show'); ovText.textContent='Removing background…'; ovSub.textContent='first time downloads the AI model';
-    if(await ensureAI()){
-      try{
-        const blob=await removeBg(originalFile,{
-          model:'isnet_quint8',
-          output:{format:'image/png'},
-          progress:(key,cur,tot)=>{ if(/fetch|download/i.test(key)&&tot) ovSub.textContent='loading model '+Math.round(cur/tot*100)+'%'; else ovSub.textContent='processing…'; }
-        });
-        fgImg=await blobToImage(blob);
-        bgSub.textContent='AI cut-out · works on any background';
-      }catch(e){ fgImg=null; }
-    }
-    if(!fgImg){ // fallback: plain-background mode with manual strength
-      tolRow.style.display='flex';
-      bgSub.textContent='plain-background mode (AI unavailable)';
-    }
-    overlay.classList.remove('show');
-  }
-
   /* ---------- drawing ---------- */
   function effScale(){return baseScale*parseFloat(zoom.value)}
   function clampOffsets(){
-    const s=effScale(), src=(whiteOn.checked&&fgImg)?fgImg:img;
-    const dw=src.width*s, dh=src.height*s;
+    const s=effScale(), dw=img.width*s, dh=img.height*s;
     const mx=Math.max(0,(dw-CW)/2), my=Math.max(0,(dh-CH)/2);
     offX=Math.max(-mx,Math.min(mx,offX)); offY=Math.max(-my,Math.min(my,offY));
   }
@@ -282,42 +201,12 @@
     ctx.fillStyle='#fff'; ctx.fillRect(0,0,CW,CH);
     if(!img) return;
     clampOffsets();
-    const s=effScale(), src=(whiteOn.checked&&fgImg)?fgImg:img;
-    const dw=src.width*s, dh=src.height*s, x=(CW-dw)/2+offX, y=(CH-dh)/2+offY;
+    const s=effScale(), dw=img.width*s, dh=img.height*s, x=(CW-dw)/2+offX, y=(CH-dh)/2+offY;
     ctx.imageSmoothingQuality='high';
-    ctx.drawImage(src,x,y,dw,dh);
+    ctx.drawImage(img,x,y,dw,dh);
   }
 
-  /* ---------- fallback flood-fill whitening (plain backgrounds only) ---------- */
-  function applyWhite(strength){
-    const id=ctx.getImageData(0,0,CW,CH), d=id.data, n=CW*CH;
-    let r=0,g=0,b=0,c=0; // sample a border ring
-    const sample=(x,y)=>{const i=(y*CW+x)*4;r+=d[i];g+=d[i+1];b+=d[i+2];c++};
-    for(let x=0;x<CW;x+=2){for(let t=0;t<6;t++){sample(x,t);sample(x,CH-1-t)}}
-    for(let y=0;y<CH;y+=2){for(let t=0;t<6;t++){sample(t,y);sample(CW-1-t,y)}}
-    r/=c;g/=c;b/=c;
-    const tol2=strength*strength, visited=new Uint8Array(n), stack=[];
-    for(let x=0;x<CW;x++){stack.push(x);stack.push((CH-1)*CW+x)}
-    for(let y=0;y<CH;y++){stack.push(y*CW);stack.push(y*CW+CW-1)}
-    while(stack.length){
-      const p=stack.pop(); if(visited[p])continue; visited[p]=1;
-      const i=p*4, dr=d[i]-r, dg=d[i+1]-g, db=d[i+2]-b;
-      if(dr*dr+dg*dg+db*db>tol2)continue;
-      d[i]=255;d[i+1]=255;d[i+2]=255;
-      const x=p%CW, y=(p/CW)|0;
-      if(x>0)stack.push(p-1); if(x<CW-1)stack.push(p+1);
-      if(y>0)stack.push(p-CW); if(y<CH-1)stack.push(p+CW);
-    }
-    for(let p=0;p<n;p++){ if(visited[p])continue;
-      const x=p%CW,y=(p/CW)|0; let near=false;
-      if(x>0&&visited[p-1])near=true; else if(x<CW-1&&visited[p+1])near=true;
-      else if(y>0&&visited[p-CW])near=true; else if(y<CH-1&&visited[p+CW])near=true;
-      if(near){const i=p*4;d[i]+=(255-d[i])*.4;d[i+1]+=(255-d[i+1])*.4;d[i+2]+=(255-d[i+2])*.4}
-    }
-    ctx.putImageData(id,0,0);
-  }
-
-  /* ---------- compress: never exceeds 25 KB ---------- */
+  /* ---------- compress: never exceeds 22 KB ---------- */
   function toBlob(q){return new Promise(res=>canvas.toBlob(res,'image/jpeg',q))}
   async function encodeToTarget(){
     let lo=0.02, hi=0.96, best=null;
@@ -336,7 +225,6 @@
     const token=++encodeToken;
     setStatus('busy','Processing…'); downloadBtn.disabled=true;
     drawRaw();
-    if(whiteOn.checked && !fgImg) applyWhite(parseInt(tol.value,10)); // fallback path only
     const blob=await encodeToTarget();
     if(token!==encodeToken) return;
     lastBlob=blob; updateSpec(blob?blob.size:0); downloadBtn.disabled=!blob;
@@ -351,12 +239,8 @@
     ckSizeRead.textContent=bytes?fmtKB(bytes):'—';
     ckSize.className='check '+(inBand?'ok':'bad'); ckSize.querySelector('.dot').textContent=inBand?'✓':'!';
     needle.style.left=Math.min(100,bytes/GAUGE_MAX*100)+'%';
-    const on=whiteOn.checked;
-    ckBgRead.textContent=on?(fgImg?'white (AI)':'white'):'original';
-    ckBg.className='check '+(on?'ok':''); ckBg.querySelector('.dot').textContent=on?'✓':'·';
-    if(inBand&&on) setStatus('ok','Ready for admission form ✓');
-    else if(inBand) setStatus('ok','Size & resolution ✓');
-    else if(bytes>MAXB) setStatus('warn','Over 20 KB — try less zoom');
+    if(inBand) setStatus('ok','Ready for admission form ✓');
+    else if(bytes>MAXB) setStatus('warn','Over 22 KB — try less zoom');
     else if(bytes>0) setStatus('warn','Under 10 KB — image is very plain');
   }
 
@@ -370,8 +254,6 @@
   canvas.addEventListener('wheel',e=>{if(!img)return;e.preventDefault();let z=parseFloat(zoom.value)*(e.deltaY<0?1.06:.94);z=Math.max(1,Math.min(3,z));zoom.value=z;zoomVal.textContent=z.toFixed(1)+'×';drawRaw();scheduleFinalize()},{passive:false});
 
   zoom.addEventListener('input',()=>{zoomVal.textContent=parseFloat(zoom.value).toFixed(1)+'×';drawRaw();scheduleFinalize()});
-  tol.addEventListener('input',()=>{tolVal.textContent=tol.value;if(whiteOn.checked&&!fgImg)scheduleFinalize()});
-  whiteOn.addEventListener('change',async()=>{await prepareBackground();finalize()});
   $('resetBtn').addEventListener('click',()=>{if(!img)return;offX=0;offY=0;zoom.value=1;zoomVal.textContent='1.0×';finalize()});
 
   downloadBtn.addEventListener('click',()=>{
@@ -381,6 +263,7 @@
     const a=document.createElement('a'); a.href=URL.createObjectURL(lastBlob); a.download=name;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   });
+})();
 </script>
 </body>
 </html>
