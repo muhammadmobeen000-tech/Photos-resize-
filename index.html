@@ -112,7 +112,7 @@
 <body>
   <header class="app">
     <h1>Admission Photo Studio</h1>
-    <div class="spec-strip mono">Target: <b>600×800</b> · <b>10–25&nbsp;KB</b> · <b>white background</b></div>
+    <div class="spec-strip mono">Target: <b>600×800</b> · <b>10–20&nbsp;KB</b> · <b>white background</b></div>
   </header>
 
   <div class="wrap">
@@ -179,7 +179,7 @@
           </div>
           <div class="gauge">
             <div class="bar"><div class="band" id="band"></div><div class="needle" id="needle" style="left:-2%"></div></div>
-            <div class="scale"><span>0</span><span>10</span><span>25</span><span>40 KB</span></div>
+            <div class="scale"><span>0</span><span>10</span><span>20</span><span>30 KB</span></div>
           </div>
         </div>
         <div class="status" id="status">Add a photo to begin</div>
@@ -193,7 +193,7 @@
   <input type="file" id="fileInput" accept="image/*" hidden>
 
 <script type="module">
-  const CW=600, CH=800, MINB=10*1024, MAXB=25*1024, GAUGE_MAX=40*1024;
+  const CW=600, CH=800, MINB=10*1024, MAXB=20*1024, GAUGE_MAX=30*1024;
 
   const $=id=>document.getElementById(id);
   const frame=$('frame'), canvas=$('editor'), ctx=canvas.getContext('2d',{willReadFrequently:true});
@@ -356,7 +356,7 @@
     ckBg.className='check '+(on?'ok':''); ckBg.querySelector('.dot').textContent=on?'✓':'·';
     if(inBand&&on) setStatus('ok','Ready for admission form ✓');
     else if(inBand) setStatus('ok','Size & resolution ✓');
-    else if(bytes>MAXB) setStatus('warn','Over 25 KB — try less zoom');
+    else if(bytes>MAXB) setStatus('warn','Over 20 KB — try less zoom');
     else if(bytes>0) setStatus('warn','Under 10 KB — image is very plain');
   }
 
